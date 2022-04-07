@@ -36,28 +36,36 @@ class Menucli implements Callable<Integer> {
             try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(con.getInputStream()))) {
                     String lines[]=reader.readLine().split("}]}");
+                    if (lines[0]!=null){
+                        for (int i=0; i<lines.length-1; i++) {
+                            String line=lines[i];
 
-                    for (int i=0; i<lines.length-1; i++) {
-                        String line=lines[i];
-
-                        System.out.println("ID du menu : "+line.split(":")[1].split(",")[0]);
-                        System.out.println("Nom du menu :"+line.split(":")[2].split(",")[0]+"\n"); 
-                        System.out.println("Plats :") ;
-                        int len = line.split(":").length;
-                        for (int k=0 ; k<(len-4)/2; k++){
-                            System.out.println("Plat "+(k+1)+" :"+line.split(":")[3+(k+1)*2].split("}")[0]); 
+                            System.out.println("ID du menu : "+line.split(":")[1].split(",")[0]);
+                            System.out.println("Nom du menu :"+line.split(":")[2].split(",")[0]+"\n"); 
+                            System.out.println("Plats :") ;
+                            int len = line.split(":").length;
+                            for (int k=0 ; k<(len-4)/2; k++){
+                                System.out.println("Plat "+(k+1)+" :"+line.split(":")[3+(k+1)*2].split("}")[0]); 
+                            }
+                            System.out.println("\n");
                         }
-                        System.out.println("\n");
+                    }
+                    else {
+                        System.out.println("Aucun menu disponible...");
                     }
                 }
         } else if (Action.equals("delete-menu")){
             System.out.println("Menu "+ idMenu + " deleted");
+            URL url = new URL(ServeurURL+"/menus/"+idMenu);
+            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setDoOutput(true);
+            httpCon.setRequestProperty("Content-Type","application/json");
+            httpCon.setRequestMethod("DELETE");
+            httpCon.connect();
         }
         return 0;
     }
 
-    // this example implements Callable, so parsing, error handling and handling user
-    // requests for usage help or version help can be done with one line of code.
     public static void main(String... args) {
         int exitCode = new CommandLine(new Menucli()).execute(args);
         System.exit(exitCode);
