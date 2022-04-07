@@ -12,6 +12,9 @@ jobs:
           java-version: '11'
       - run: mvn clean compile assembly:single
       - uses: actions/upload-artifact@v2
+        with:
+          name: Menucli
+          path: ./target/MenuCli.jar
 
   tests:
     runs-on: ubuntu-20.04
@@ -31,7 +34,7 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
-          name: MenuCli
+          name: Menucli
           path: ./releaseAsset
       - name: Create Release
         id: create-release
@@ -49,6 +52,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./releaseAsset/MenuCli-1.0-jar-with-dependencies.jar
+          asset_path: ./releaseAsset/Menucli.jar
           asset_name: Menucli.jar
           asset_content_type: application/java-archive
