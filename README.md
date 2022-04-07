@@ -2,7 +2,7 @@
 
 ### Ajouter un menu :
 
-curl -H "Content-Type: application/json" --data-raw '{"name": "Nom du menu", "dishes": [{"name": "Plat 1"},{"name": "Plat 2"},{"name":"Plat 3"}]}' https://menu-server-jmz.herokuapp.com/menus
+curl -H "Content-Type: application/json" --data-raw '{"name": "Menu du chef", "dishes": [{"name": "Beignets de crabe"},{"name": "Entrecôte grillée"},{"name":"Crème brûlée"}]}' https://menu-server-jmz.herokuapp.com/menus
 
 ### Lister les menus :
 

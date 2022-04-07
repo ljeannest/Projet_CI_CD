@@ -29,19 +29,25 @@ class Menucli implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         if (Action.equals("list-menus")) {
-            System.out.println("Listing menus :");
+            System.out.println("Listing menus :\n\n");
             URL url = new URL(ServeurURL+"/menus");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);
             try (BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(con.getInputStream()))) {
-                    for (String line; (line = reader.readLine()) != null; ) {
-                        for (int j = 0; j<line.split("]").length-1; j++){
-                            System.out.println("id = " + line.split("]")[j].split(":")[1].split(",")[0] + " (" + line.split("]")[j].split("\"")[5] + ") :");
-                            for (int i = 0; i<line.split("]")[j].split("id").length-2; i++) {
-                                System.out.println("- " + line.split("]")[j].split("id")[i+2].split("\"")[4]);
-                            }
-                        }   
+                new InputStreamReader(con.getInputStream()))) {
+                    String lines[]=reader.readLine().split("}]}");
+
+                    for (int i=0; i<lines.length-1; i++) {
+                        String line=lines[i];
+
+                        System.out.println("ID du menu : "+line.split(":")[1].split(",")[0]);
+                        System.out.println("Nom du menu :"+line.split(":")[2].split(",")[0]+"\n"); 
+                        System.out.println("Plats :") ;
+                        int len = line.split(":").length;
+                        for (int k=0 ; k<(len-4)/2; k++){
+                            System.out.println("Plat "+(k+1)+" :"+line.split(":")[3+(k+1)*2].split("}")[0]); 
+                        }
+                        System.out.println("\n");
                     }
                 }
         } else if (Action.equals("delete-menu")){
