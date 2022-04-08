@@ -36,7 +36,10 @@ class Menucli implements Callable<Integer> {
             try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(con.getInputStream()))) {
                     String lines[]=reader.readLine().split("}]}");
-                    if (lines[0]!=null){
+                    if (lines[0].contains("[]")) {
+                        System.out.println("Aucun menu disponible...");
+                    }
+                    else{
                         for (int i=0; i<lines.length-1; i++) {
                             String line=lines[i];
 
@@ -50,9 +53,9 @@ class Menucli implements Callable<Integer> {
                             System.out.println("\n");
                         }
                     }
-                    else {
-                        System.out.println("Aucun menu disponible...");
-                    }
+                }
+                catch (Exception e) {
+                    System.out.println("Aucun menu disponible...");
                 }
         } else if (Action.equals("delete-menu")){
             System.out.println("Menu "+ idMenu + " deleted");
